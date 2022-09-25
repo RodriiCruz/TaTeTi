@@ -41,7 +41,7 @@ public class Ventana extends JFrame {
 	private Integer fila;
 	private Integer columna;
 	private Juego juego;
-	private boolean botonSeleccionado;
+	private JButton botonSeleccionado;
 
 	public Ventana() {
 		IMG_X = new ImageIcon("img/X.png");
@@ -53,7 +53,6 @@ public class Ventana extends JFrame {
 		fila = 0;
 		columna = 0;
 		juego = new Juego();
-		botonSeleccionado = false;
 		initComponents();
 	}
 
@@ -94,7 +93,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 0;
 				columna = 0;
-				colocarMoverFicha();
+				colocarMoverFicha(btnUno);
 			}
 		});
 		btnUno.setBounds(30, 46, 100, 100);
@@ -109,7 +108,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 0;
 				columna = 1;
-				colocarMoverFicha();
+				colocarMoverFicha(btnDos);
 			}
 		});
 		btnDos.setBounds(138, 46, 100, 100);
@@ -124,7 +123,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 0;
 				columna = 2;
-				colocarMoverFicha();
+				colocarMoverFicha(btnTres);
 			}
 		});
 		btnTres.setBounds(248, 46, 100, 100);
@@ -139,7 +138,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 1;
 				columna = 0;
-				colocarMoverFicha();
+				colocarMoverFicha(btnCuatro);
 			}
 		});
 		btnCuatro.setBounds(30, 157, 100, 100);
@@ -154,7 +153,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 1;
 				columna = 1;
-				colocarMoverFicha();
+				colocarMoverFicha(btnCinco);
 			}
 		});
 		btnCinco.setBounds(138, 157, 100, 100);
@@ -169,7 +168,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 1;
 				columna = 2;
-				colocarMoverFicha();
+				colocarMoverFicha(btnSeis);
 			}
 		});
 		btnSeis.setBounds(248, 157, 100, 100);
@@ -184,7 +183,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 2;
 				columna = 0;
-				colocarMoverFicha();
+				colocarMoverFicha(btnSiete);
 			}
 		});
 		btnSiete.setBounds(30, 268, 100, 100);
@@ -199,7 +198,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 2;
 				columna = 1;
-				colocarMoverFicha();
+				colocarMoverFicha(btnOcho);
 			}
 		});
 		btnOcho.setBounds(138, 268, 100, 100);
@@ -214,7 +213,7 @@ public class Ventana extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				fila = 2;
 				columna = 2;
-				colocarMoverFicha();
+				colocarMoverFicha(btnNueve);
 			}
 		});
 		btnNueve.setBounds(248, 268, 100, 100);
@@ -231,19 +230,21 @@ public class Ventana extends JFrame {
 		return accionRealizada;
 	}
 
-	private boolean moverFicha() {
+	private boolean moverFicha(JButton boton) {
 		boolean accionRealizada = false;
 
 		posicionNueva[0] = fila;
 		posicionNueva[1] = columna;
 
-		if (botonSeleccionado && posicionActual != posicionNueva) {
+		if (botonSeleccionado != null && posicionActual != posicionNueva) {
 			accionRealizada = juego.moverFicha(jugador, posicionActual, posicionNueva);
-			botonSeleccionado = false;
+			botonSeleccionado.setBorderPainted(false);
+			botonSeleccionado = null;
 		} else {
 			if (juego.obtenerFicha(fila, columna).equals("X") && jugador == 1
 					|| juego.obtenerFicha(fila, columna).equals("O") && jugador == 2) {
-				botonSeleccionado = true;
+				botonSeleccionado = boton;
+				botonSeleccionado.setBorderPainted(true);
 			}
 			posicionActual[0] = fila;
 			posicionActual[1] = columna;
@@ -252,14 +253,14 @@ public class Ventana extends JFrame {
 		return accionRealizada;
 	}
 
-	private void colocarMoverFicha() {
+	private void colocarMoverFicha(JButton boton) {
 		boolean accionRealizada = false;
 		int jugadorActual = jugador;
 
 		if (!juego.todasFichasColocadas())
 			accionRealizada = colocarFicha();
 		else
-			accionRealizada = moverFicha();
+			accionRealizada = moverFicha(boton);
 
 		dibujarTablero();
 
