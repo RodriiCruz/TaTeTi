@@ -26,16 +26,6 @@ public class Juego {
 		}
 	}
 	
-	public void imprimir() {
-		for (int i = 0; i < tablero.length; i++) {
-			for (int j = 0; j < tablero.length; j++) {
-				System.out.print(tablero[i][j]);
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-	
 	public boolean todasFichasColocadas() {
 		return cantidadDeFichas > 5;
 	}

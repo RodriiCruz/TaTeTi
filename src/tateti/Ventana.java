@@ -22,8 +22,8 @@ import javax.swing.border.EmptyBorder;
  */
 public class Ventana extends JFrame {
 
-	private final ImageIcon IMG_X = new ImageIcon("img/X.png");
-	private final ImageIcon IMG_O = new ImageIcon("img/O.png");
+	private final ImageIcon IMG_X;
+	private final ImageIcon IMG_O;
 	private JPanel contentPane;
 	private JButton btnUno;
 	private JButton btnDos;
@@ -44,6 +44,8 @@ public class Ventana extends JFrame {
 	private boolean botonSeleccionado;
 
 	public Ventana() {
+		IMG_X = new ImageIcon("img/X.png");
+		IMG_O = new ImageIcon("img/O.png");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/X.png"));
 		posicionActual = new Integer[2];
 		posicionNueva = new Integer[2];
@@ -238,8 +240,6 @@ public class Ventana extends JFrame {
 		if (botonSeleccionado && posicionActual != posicionNueva) {
 			accionRealizada = juego.moverFicha(jugador, posicionActual, posicionNueva);
 			botonSeleccionado = false;
-			posicionActual[0] = null;
-			posicionActual[1] = null;
 		} else {
 			if (juego.obtenerFicha(fila, columna).equals("X") && jugador == 1
 					|| juego.obtenerFicha(fila, columna).equals("O") && jugador == 2) {
