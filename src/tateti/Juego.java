@@ -6,11 +6,8 @@ package tateti;
  */
 public class Juego {
 
-	private final String JUGADOR_UNO = "X";
-	private final String JUGADOR_DOS = "O";
-	private final String ESPACIO_LIBRE = "-";
 	private Integer jugador;
-	public String[][] tablero;
+	private String[][] tablero;
 	private Integer cantidadDeFichas;
 
 	public Juego() {
@@ -23,7 +20,7 @@ public class Juego {
 	private void iniciar() {
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				tablero[i][j] = ESPACIO_LIBRE;
+				tablero[i][j] = Constantes.ESPACIO_LIBRE;
 			}
 		}
 	}
@@ -43,15 +40,15 @@ public class Juego {
 	public void colocarFicha(Integer f, Integer c) {
 
 		if (jugador == 1)
-			tablero[f][c] = JUGADOR_UNO;
+			tablero[f][c] = Constantes.JUGADOR_UNO;
 		else
-			tablero[f][c] = JUGADOR_DOS;
+			tablero[f][c] = Constantes.JUGADOR_DOS;
 		
 		cantidadDeFichas++;
 	}
 
 	public boolean comprobarLugar(Integer f, Integer c) {
-		return tablero[f][c].equals(ESPACIO_LIBRE);
+		return tablero[f][c].equals(Constantes.ESPACIO_LIBRE);
 	}
 
 	private boolean comprobarVertical() {
@@ -62,9 +59,9 @@ public class Juego {
 
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				if (tablero[j][i].equals(JUGADOR_UNO))
+				if (tablero[j][i].equals(Constantes.JUGADOR_UNO))
 					conteoX++;
-				else if (tablero[j][i].equals(JUGADOR_DOS))
+				else if (tablero[j][i].equals(Constantes.JUGADOR_DOS))
 					conteoO++;
 			}
 
@@ -88,9 +85,9 @@ public class Juego {
 
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				if (tablero[i][j].equals(JUGADOR_UNO))
+				if (tablero[i][j].equals(Constantes.JUGADOR_UNO))
 					conteoX++;
-				else if (tablero[i][j].equals(JUGADOR_DOS))
+				else if (tablero[i][j].equals(Constantes.JUGADOR_DOS))
 					conteoO++;
 			}
 
@@ -111,7 +108,7 @@ public class Juego {
 		String uno = tablero[1][1];
 		String dos = tablero[2][2];
 
-		return !cero.equals(ESPACIO_LIBRE) && cero.equals(uno) && uno.equals(dos);
+		return !cero.equals(Constantes.ESPACIO_LIBRE) && cero.equals(uno) && uno.equals(dos);
 	}
 
 	private boolean comprobarDiagSecundaria() {
@@ -119,7 +116,7 @@ public class Juego {
 		String uno = tablero[1][1];
 		String dos = tablero[2][0];
 
-		return !cero.equals(ESPACIO_LIBRE) && cero.equals(uno) && uno.equals(dos);
+		return !cero.equals(Constantes.ESPACIO_LIBRE) && cero.equals(uno) && uno.equals(dos);
 	}
 
 	public boolean comprobarTablero() {
@@ -131,15 +128,15 @@ public class Juego {
 		
 		if (comprobarLugar(nuevaPosicion[0], nuevaPosicion[1])) {
 			
-			if (jugador == 1 && tablero[posicionActual[0]][posicionActual[1]].equals(JUGADOR_UNO)) {
-				tablero[nuevaPosicion[0]][nuevaPosicion[1]] = JUGADOR_UNO;
-				tablero[posicionActual[0]][posicionActual[1]] = ESPACIO_LIBRE;
+			if (jugador == 1 && tablero[posicionActual[0]][posicionActual[1]].equals(Constantes.JUGADOR_UNO)) {
+				tablero[nuevaPosicion[0]][nuevaPosicion[1]] = Constantes.JUGADOR_UNO;
+				tablero[posicionActual[0]][posicionActual[1]] = Constantes.ESPACIO_LIBRE;
 				realizado = true;
 			}
 			
-			if (jugador == 2 && tablero[posicionActual[0]][posicionActual[1]].equals(JUGADOR_DOS)) {
-				tablero[nuevaPosicion[0]][nuevaPosicion[1]] = JUGADOR_DOS;
-				tablero[posicionActual[0]][posicionActual[1]] = ESPACIO_LIBRE;
+			if (jugador == 2 && tablero[posicionActual[0]][posicionActual[1]].equals(Constantes.JUGADOR_DOS)) {
+				tablero[nuevaPosicion[0]][nuevaPosicion[1]] = Constantes.JUGADOR_DOS;
+				tablero[posicionActual[0]][posicionActual[1]] = Constantes.ESPACIO_LIBRE;
 				realizado = true;
 			}
 		}

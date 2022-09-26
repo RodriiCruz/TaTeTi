@@ -3,11 +3,9 @@ package tateti;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,8 +19,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class Ventana extends JFrame {
 
-	private final ImageIcon IMG_X;
-	private final ImageIcon IMG_O;
 	private JPanel contentPane;
 	private JButton btnUno;
 	private JButton btnDos;
@@ -44,9 +40,6 @@ public class Ventana extends JFrame {
 	private JLabel lblGanador;
 
 	public Ventana() {
-		IMG_X = new ImageIcon("img/X.png");
-		IMG_O = new ImageIcon("img/O.png");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("img/X.png"));
 		posicionActual = new Integer[2];
 		posicionNueva = new Integer[2];
 		fila = 0;
@@ -56,13 +49,13 @@ public class Ventana extends JFrame {
 	}
 
 	private void initComponents() {
-		setTitle("TA TE TI!");
+		setIconImage(Constantes.ICONO);
+		setTitle(Constantes.TITULO);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(394, 422);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
-		contentPane.setIgnoreRepaint(true);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
@@ -77,16 +70,16 @@ public class Ventana extends JFrame {
 		agregarBotones();
 		cargarPanelResultado();
 
-		lblJugador = new JLabel("JUGADOR 1");
+		lblJugador = new JLabel(Constantes.JUGADOR + juego.getJugador());
 		lblJugador.setEnabled(false);
 		lblJugador.setForeground(Color.WHITE);
 		lblJugador.setHorizontalAlignment(SwingConstants.CENTER);
-		lblJugador.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblJugador.setFont(new Font(Constantes.FUENTE, Font.BOLD, 20));
 		lblJugador.setBounds(30, 11, 318, 24);
 		contentPane.add(lblJugador);
 
 		JLabel fondo = new JLabel();
-		fondo.setIcon(new ImageIcon("img/fondo.png"));
+		fondo.setIcon(Constantes.BG_TABLERO);
 		fondo.setBounds(0, 0, 378, 383);
 		contentPane.add(fondo);
 		
@@ -232,11 +225,12 @@ public class Ventana extends JFrame {
 	
 	private void cargarPanelResultado() {
 		
-		JButton btnReiniciar = new JButton("Reiniciar");
+		JButton btnReiniciar = new JButton(Constantes.REINICIAR);
 		btnReiniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				reiniciarJuego();
+				juego = new Juego();
+				dibujarTablero();
 				activarBotones(true);
 				panelResultado.setVisible(false);
 			}
@@ -244,7 +238,7 @@ public class Ventana extends JFrame {
 		btnReiniciar.setBounds(101, 216, 85, 23);
 		panelResultado.add(btnReiniciar);
 		
-		JButton btnSalir = new JButton("Salir");
+		JButton btnSalir = new JButton(Constantes.SALIR);
 		btnSalir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -256,12 +250,12 @@ public class Ventana extends JFrame {
 		
 		lblGanador = new JLabel();
 		lblGanador.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGanador.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblGanador.setFont(new Font(Constantes.FUENTE, Font.BOLD, 20));
 		lblGanador.setBounds(0, 175, 378, 30);
 		panelResultado.add(lblGanador);
 		
 		JLabel fondo = new JLabel();
-		fondo.setIcon(new ImageIcon("img/fondo2.png"));
+		fondo.setIcon(Constantes.BG_RESULTADO);
 		fondo.setBounds(0, 90, 378, 216);
 		panelResultado.add(fondo);
 	}
@@ -287,8 +281,8 @@ public class Ventana extends JFrame {
 			botonSeleccionado.setBorderPainted(false);
 			botonSeleccionado = null;
 		} else {
-			if (juego.obtenerFicha(fila, columna).equals("X") && juego.getJugador() == 1
-					|| juego.obtenerFicha(fila, columna).equals("O") && juego.getJugador() == 2) {
+			if (juego.obtenerFicha(fila, columna).equals(Constantes.JUGADOR_UNO) && juego.getJugador() == 1
+					|| juego.obtenerFicha(fila, columna).equals(Constantes.JUGADOR_DOS) && juego.getJugador() == 2) {
 				botonSeleccionado = boton;
 				botonSeleccionado.setBorderPainted(true);
 			}
@@ -318,21 +312,21 @@ public class Ventana extends JFrame {
 		}
 
 		if (juego.comprobarTablero()) {
-			lblGanador.setText("GANÓ EL JUGADOR " + jugadorActual + "!");
+			lblGanador.setText(Constantes.RESULTADO(jugadorActual));
 			panelResultado.setVisible(true);
 			activarBotones(false);
 		} else {
-			lblJugador.setText("JUGADOR " + juego.getJugador());
+			lblJugador.setText(Constantes.JUGADOR + juego.getJugador());
 		}
 	}
 
 	private void colocarImagen(String ficha, JButton boton) {
 		switch (ficha) {
-		case "X":
-			boton.setIcon(IMG_X);
+		case Constantes.JUGADOR_UNO:
+			boton.setIcon(Constantes.IMG_X);
 			break;
-		case "O":
-			boton.setIcon(IMG_O);
+		case Constantes.JUGADOR_DOS:
+			boton.setIcon(Constantes.IMG_O);
 			break;
 		default:
 			boton.setIcon(null);
@@ -346,31 +340,31 @@ public class Ventana extends JFrame {
 			for (int j = 0; j < 3; j++) {
 				switch (boton) {
 				case 1:
-					colocarImagen(juego.tablero[i][j], btnUno);
+					colocarImagen(juego.obtenerFicha(i, j), btnUno);
 					break;
 				case 2:
-					colocarImagen(juego.tablero[i][j], btnDos);
+					colocarImagen(juego.obtenerFicha(i, j), btnDos);
 					break;
 				case 3:
-					colocarImagen(juego.tablero[i][j], btnTres);
+					colocarImagen(juego.obtenerFicha(i, j), btnTres);
 					break;
 				case 4:
-					colocarImagen(juego.tablero[i][j], btnCuatro);
+					colocarImagen(juego.obtenerFicha(i, j), btnCuatro);
 					break;
 				case 5:
-					colocarImagen(juego.tablero[i][j], btnCinco);
+					colocarImagen(juego.obtenerFicha(i, j), btnCinco);
 					break;
 				case 6:
-					colocarImagen(juego.tablero[i][j], btnSeis);
+					colocarImagen(juego.obtenerFicha(i, j), btnSeis);
 					break;
 				case 7:
-					colocarImagen(juego.tablero[i][j], btnSiete);
+					colocarImagen(juego.obtenerFicha(i, j), btnSiete);
 					break;
 				case 8:
-					colocarImagen(juego.tablero[i][j], btnOcho);
+					colocarImagen(juego.obtenerFicha(i, j), btnOcho);
 					break;
 				case 9:
-					colocarImagen(juego.tablero[i][j], btnNueve);
+					colocarImagen(juego.obtenerFicha(i, j), btnNueve);
 					break;
 				}
 				boton++;
@@ -378,19 +372,6 @@ public class Ventana extends JFrame {
 		}
 	}
 
-	private void reiniciarJuego() {
-		this.juego = new Juego();
-		this.btnUno.setIcon(null);
-		this.btnDos.setIcon(null);
-		this.btnTres.setIcon(null);
-		this.btnCuatro.setIcon(null);
-		this.btnCinco.setIcon(null);
-		this.btnSeis.setIcon(null);
-		this.btnSiete.setIcon(null);
-		this.btnOcho.setIcon(null);
-		this.btnNueve.setIcon(null);
-	}
-	
 	private void activarBotones(boolean b) {
 		this.btnUno.setEnabled(b);
 		this.btnDos.setEnabled(b);
