@@ -9,10 +9,12 @@ public class Juego {
 	private final String JUGADOR_UNO = "X";
 	private final String JUGADOR_DOS = "O";
 	private final String ESPACIO_LIBRE = "-";
+	private Integer jugador;
 	public String[][] tablero;
 	private Integer cantidadDeFichas;
 
 	public Juego() {
+		this.jugador = 1;
 		this.tablero = new String[3][3];
 		this.cantidadDeFichas = 0;
 		iniciar();
@@ -26,13 +28,21 @@ public class Juego {
 		}
 	}
 	
+	public void setJugador(Integer jugador) {
+		this.jugador = jugador;
+	}
+	
+	public Integer getJugador() {
+		return this.jugador;
+	}
+	
 	public boolean todasFichasColocadas() {
 		return cantidadDeFichas > 5;
 	}
 
-	public void colocarFicha(Integer f, Integer c, Integer numJugador) {
+	public void colocarFicha(Integer f, Integer c) {
 
-		if (numJugador == 1)
+		if (jugador == 1)
 			tablero[f][c] = JUGADOR_UNO;
 		else
 			tablero[f][c] = JUGADOR_DOS;
@@ -116,7 +126,7 @@ public class Juego {
 		return comprobarVertical() || comprobarHorizontal() || comprobarDiagPrincipal() || comprobarDiagSecundaria();
 	}
 	
-	public boolean moverFicha(Integer jugador, Integer[] posicionActual, Integer[] nuevaPosicion) {
+	public boolean moverFicha(Integer[] posicionActual, Integer[] nuevaPosicion) {
 		boolean realizado = false;
 		
 		if (comprobarLugar(nuevaPosicion[0], nuevaPosicion[1])) {

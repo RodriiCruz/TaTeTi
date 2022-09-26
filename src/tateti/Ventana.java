@@ -36,7 +36,6 @@ public class Ventana extends JFrame {
 	private JLabel lblJugador;
 	private Integer[] posicionActual;
 	private Integer[] posicionNueva;
-	private Integer jugador;
 	private Integer fila;
 	private Integer columna;
 	private Juego juego;
@@ -50,7 +49,6 @@ public class Ventana extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/X.png"));
 		posicionActual = new Integer[2];
 		posicionNueva = new Integer[2];
-		jugador = 1;
 		fila = 0;
 		columna = 0;
 		juego = new Juego();
@@ -272,7 +270,7 @@ public class Ventana extends JFrame {
 		boolean accionRealizada = false;
 
 		if (juego.comprobarLugar(fila, columna)) {
-			juego.colocarFicha(fila, columna, jugador);
+			juego.colocarFicha(fila, columna);
 			accionRealizada = true;
 		}
 		return accionRealizada;
@@ -285,12 +283,12 @@ public class Ventana extends JFrame {
 		posicionNueva[1] = columna;
 
 		if (botonSeleccionado != null && posicionActual != posicionNueva) {
-			accionRealizada = juego.moverFicha(jugador, posicionActual, posicionNueva);
+			accionRealizada = juego.moverFicha(posicionActual, posicionNueva);
 			botonSeleccionado.setBorderPainted(false);
 			botonSeleccionado = null;
 		} else {
-			if (juego.obtenerFicha(fila, columna).equals("X") && jugador == 1
-					|| juego.obtenerFicha(fila, columna).equals("O") && jugador == 2) {
+			if (juego.obtenerFicha(fila, columna).equals("X") && juego.getJugador() == 1
+					|| juego.obtenerFicha(fila, columna).equals("O") && juego.getJugador() == 2) {
 				botonSeleccionado = boton;
 				botonSeleccionado.setBorderPainted(true);
 			}
@@ -303,7 +301,7 @@ public class Ventana extends JFrame {
 
 	private void colocarMoverFicha(JButton boton) {
 		boolean accionRealizada = false;
-		int jugadorActual = jugador;
+		int jugadorActual = juego.getJugador();
 
 		if (!juego.todasFichasColocadas())
 			accionRealizada = colocarFicha();
@@ -313,10 +311,10 @@ public class Ventana extends JFrame {
 		dibujarTablero();
 
 		if (accionRealizada) {
-			if (jugador == 1)
-				jugador = 2;
+			if (juego.getJugador() == 1)
+				juego.setJugador(2);
 			else
-				jugador = 1;
+				juego.setJugador(1);
 		}
 
 		if (juego.comprobarTablero()) {
@@ -324,7 +322,7 @@ public class Ventana extends JFrame {
 			panelResultado.setVisible(true);
 			activarBotones(false);
 		} else {
-			lblJugador.setText("JUGADOR " + jugador);
+			lblJugador.setText("JUGADOR " + juego.getJugador());
 		}
 	}
 
@@ -382,7 +380,6 @@ public class Ventana extends JFrame {
 
 	private void reiniciarJuego() {
 		this.juego = new Juego();
-		this.jugador = 1;
 		this.btnUno.setIcon(null);
 		this.btnDos.setIcon(null);
 		this.btnTres.setIcon(null);
