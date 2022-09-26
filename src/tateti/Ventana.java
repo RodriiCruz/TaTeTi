@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -42,6 +41,8 @@ public class Ventana extends JFrame {
 	private Integer columna;
 	private Juego juego;
 	private JButton botonSeleccionado;
+	private JPanel panelResultado;
+	private JLabel lblGanador;
 
 	public Ventana() {
 		IMG_X = new ImageIcon("img/X.png");
@@ -63,11 +64,20 @@ public class Ventana extends JFrame {
 		setSize(394, 422);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.setIgnoreRepaint(true);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-
+		
+		panelResultado = new JPanel();
+		panelResultado.setVisible(false);
+		panelResultado.setOpaque(false);
+		panelResultado.setBounds(0, 0, 378, 383);
+		panelResultado.setLayout(null);
+		contentPane.add(panelResultado);
+		
 		agregarBotones();
+		cargarPanelResultado();
 
 		lblJugador = new JLabel("JUGADOR 1");
 		lblJugador.setEnabled(false);
@@ -81,6 +91,8 @@ public class Ventana extends JFrame {
 		fondo.setIcon(new ImageIcon("img/fondo.png"));
 		fondo.setBounds(0, 0, 378, 383);
 		contentPane.add(fondo);
+		
+		
 	}
 
 	private void agregarBotones() {
@@ -219,6 +231,42 @@ public class Ventana extends JFrame {
 		btnNueve.setBounds(248, 268, 100, 100);
 		contentPane.add(btnNueve);
 	}
+	
+	private void cargarPanelResultado() {
+		
+		JButton btnReiniciar = new JButton("Reiniciar");
+		btnReiniciar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reiniciarJuego();
+				activarBotones(true);
+				panelResultado.setVisible(false);
+			}
+		});
+		btnReiniciar.setBounds(101, 216, 85, 23);
+		panelResultado.add(btnReiniciar);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnSalir.setBounds(189, 216, 85, 23);
+		panelResultado.add(btnSalir);
+		
+		lblGanador = new JLabel();
+		lblGanador.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGanador.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblGanador.setBounds(0, 175, 378, 30);
+		panelResultado.add(lblGanador);
+		
+		JLabel fondo = new JLabel();
+		fondo.setIcon(new ImageIcon("img/fondo2.png"));
+		fondo.setBounds(0, 90, 378, 216);
+		panelResultado.add(fondo);
+	}
 
 	private boolean colocarFicha() {
 		boolean accionRealizada = false;
@@ -272,11 +320,12 @@ public class Ventana extends JFrame {
 		}
 
 		if (juego.comprobarTablero()) {
-			JOptionPane.showMessageDialog(null, "GANÓ JUGADOR " + jugadorActual);
-			reiniciarJuego();
+			lblGanador.setText("GANÓ EL JUGADOR " + jugadorActual + "!");
+			panelResultado.setVisible(true);
+			activarBotones(false);
+		} else {
+			lblJugador.setText("JUGADOR " + jugador);
 		}
-
-		lblJugador.setText("JUGADOR " + jugador);
 	}
 
 	private void colocarImagen(String ficha, JButton boton) {
@@ -343,5 +392,17 @@ public class Ventana extends JFrame {
 		this.btnSiete.setIcon(null);
 		this.btnOcho.setIcon(null);
 		this.btnNueve.setIcon(null);
+	}
+	
+	private void activarBotones(boolean b) {
+		this.btnUno.setEnabled(b);
+		this.btnDos.setEnabled(b);
+		this.btnTres.setEnabled(b);
+		this.btnCuatro.setEnabled(b);
+		this.btnCinco.setEnabled(b);
+		this.btnSeis.setEnabled(b);
+		this.btnSiete.setEnabled(b);
+		this.btnOcho.setEnabled(b);
+		this.btnNueve.setEnabled(b);
 	}
 }
